@@ -10,7 +10,8 @@ class MarkdownUrlVim:
 
     @neovim.command('MarkdownUrlPaste')
     def paste_markdown_url(self):
-        url = self.nvim.call("getreg", "*")
+        # url = self.nvim.call("getreg", "*")
+        url = self.nvim.call("getreg", "+")
         try:
             res = requests.get(url)
             soup = BeautifulSoup(res.content)
@@ -20,3 +21,15 @@ class MarkdownUrlVim:
         except requests.RequestException:
             self.nvim.feedkeys("i" + url + self.nvim.replace_termcodes("<esc>"))
 
+    @neovim.command('OrgmodeUrlPaste')
+    def paste_markdown_url(self):
+        # url = self.nvim.call("getreg", "*")
+        url = self.nvim.call("getreg", "+")
+        try:
+            res = requests.get(url)
+            soup = BeautifulSoup(res.content)
+            title = soup.title.text
+            markdown_str = f"[[{url}][{title}]]"
+            self.nvim.feedkeys("i" + markdown_str + self.nvim.replace_termcodes("<esc>"))
+        except requests.RequestException:
+            self.nvim.feedkeys("i" + url + self.nvim.replace_termcodes("<esc>"))
