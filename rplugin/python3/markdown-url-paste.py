@@ -8,7 +8,7 @@ class MarkdownUrlVim:
     def __init__(self, nvim):
         self.nvim = nvim
 
-    @neovim.command('MarkdownUrlPaste')
+    @neovim.command("MarkdownUrlPaste")
     def paste_markdown_url(self):
         # url = self.nvim.call("getreg", "*")
         url = self.nvim.call("getreg", "+")
@@ -17,12 +17,14 @@ class MarkdownUrlVim:
             soup = BeautifulSoup(res.content)
             title = soup.title.text
             markdown_str = f"[{title}]({url})"
-            self.nvim.feedkeys("i" + markdown_str + self.nvim.replace_termcodes("<esc>"))
+            self.nvim.feedkeys(
+                "i" + markdown_str + self.nvim.replace_termcodes("<esc>")
+            )
         except requests.RequestException:
             self.nvim.feedkeys("i" + url + self.nvim.replace_termcodes("<esc>"))
 
-    @neovim.command('OrgmodeUrlPaste')
-    def paste_markdown_url(self):
+    @neovim.command("OrgmodeUrlPaste")
+    def paste_orgmode_url(self):
         # url = self.nvim.call("getreg", "*")
         url = self.nvim.call("getreg", "+")
         try:
@@ -30,6 +32,8 @@ class MarkdownUrlVim:
             soup = BeautifulSoup(res.content)
             title = soup.title.text
             markdown_str = f"[[{url}][{title}]]"
-            self.nvim.feedkeys("i" + markdown_str + self.nvim.replace_termcodes("<esc>"))
+            self.nvim.feedkeys(
+                "i" + markdown_str + self.nvim.replace_termcodes("<esc>")
+            )
         except requests.RequestException:
             self.nvim.feedkeys("i" + url + self.nvim.replace_termcodes("<esc>"))
